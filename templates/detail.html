@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main>
+    <!-- Display plant's name dynamically -->
+    <h1>{{ plant['name'] }}</h1>
+
+    <!-- Display plant's photo dynamically -->
+    <img src="{{ plant['photo_url'] }}" alt="{{ plant['name'] }}">
+
+    <section id="info">
+        <h3>Info</h3>
+
+        <!-- Display date planted dynamically -->
+        <strong>Date Planted:</strong>
+        {{ plant['date_planted'] }}
+        <br><br>
+
+        <!-- Display variety dynamically -->
+        <strong>Variety:</strong>
+        {{ plant['variety'] }}
+        <br><br>
+
+        <!-- Link to edit the plant, passing the dynamic plant id -->
+        <a class="nav" href="{{ url_for('edit', plant_id=plant['_id']) }}">Edit Plant</a><br><br>
+    </section>
+
+    <!-- Form to add a harvest entry -->
+    <form action="{{ url_for('harvest', plant_id=plant['_id']) }}" method="POST">
+        <fieldset>
+            <legend>Harvested:</legend>
+            
+            <label>
+                Amount harvested
+                <input type="text" name="quantity" placeholder="e.g. 2 tomatoes">
+            </label>
+
+            <label>
+                Date harvested
+                <input type="date" name="date">
+            </label>
+
+            <input type="submit" class="submit" value="Harvest!">
+        </fieldset>
+    </form>
+
+    <!-- Harvest history section dynamically populated -->
+    <section id="harvest-history">
+        <h3>Harvest History</h3>
+
+        <ul>
+            {% for harvest in harvests %}
+                <li>{{ harvest['date'] }}: Harvested {{ harvest['quantity'] }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Delete plant form with confirmation prompt -->
+    <form action="{{ url_for('delete', plant_id=plant['_id']) }}" method="POST" id="delete-form" onsubmit="return confirm_delete()">
+        <input type="submit" class="nav" onclick="delete_modal()" value="Delete Plant">
+    </form>
+</main>
+
+{% endblock content %}

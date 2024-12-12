@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main>
+    <div id="content">
+        <h1>My Plants</h1>
+
+        <a href="/create" class="nav">+ New Plant</a>
+
+        <div id="items">
+            {# Loop over the plants passed from the route and display each plant dynamically #}
+            {% for plant in plants %}
+                <div class="card">
+                    <!-- Link to plant detail page with the plant's id dynamically inserted in the URL -->
+                    <a href="/plant/{{ plant['_id'] }}"><img src="{{ plant['photo_url'] }}" alt="{{ plant['name'] }}"></a>
+                    <div class="card-content">
+                        <!-- Display the plant's name -->
+                        <a href="/plant/{{ plant['_id'] }}">{{ plant['name'] }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
